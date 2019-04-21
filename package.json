@@ -1,0 +1,23 @@
+{
+  "name": "reposter",
+  "version": "1.0.0",
+  "description": "Repost from a mailing list to a discord server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForrestWeiswolf/email-discord-reposter.git"
+  },
+  "author": "Forrest Wolf <forrest.weiswolf@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ForrestWeiswolf/email-discord-reposter/issues"
+  },
+  "homepage": "https://github.com/ForrestWeiswolf/email-discord-reposter#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
+  }
+}
