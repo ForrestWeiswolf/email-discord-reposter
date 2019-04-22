@@ -14,4 +14,4 @@ function listMessageIds(auth) {
   )
 }
 
-authorize(listMessageIds)
+authorize().then(listMessageIds)

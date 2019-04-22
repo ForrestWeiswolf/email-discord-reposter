@@ -44,22 +44,27 @@ function getNewToken(oAuth2Client, callback) {
 }
 
 /**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
+ * Create an OAuth2 client with the given credentials, returning a promise that resolves to the OAuth2 client
  * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
  */
-module.exports = function authorize(callback) {
+function authorize(callback) {
   const oAuth2Client = new google.auth.OAuth2(
     credentials.installed.client_id,
     credentials.installed.client_secret,
     credentials.installed.redirect_uris[0]
   )
 
-  // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) return getNewToken(oAuth2Client, callback)
-    oAuth2Client.setCredentials(JSON.parse(token))
-    callback(oAuth2Client)
+  return new Promise((resolve, reject) => {
+    // Check if we have previously stored a token.
+    fs.readFile(TOKEN_PATH, (err, token) => {
+      if (err){
+        resolve(getNewToken(oAuth2Client, callback))
+      } else {
+        oAuth2Client.setCredentials(JSON.parse(token))
+        resolve(oAuth2Client)
+      }
+    })
   })
 }
+
+module.exports = authorize
