@@ -17,6 +17,29 @@ function listMessageIds(auth) {
   })
 }
 
+function getMessage(auth, id) {
+  const gmail = google.gmail({ version: 'v1', auth })
+
+  return new Promise((resolve, reject) => {
+    gmail.users.messages.get(
+      {
+        userId: 'me',
+        id,
+      },
+      (err, res) => {
+        if (err) reject(err)
+        resolve(res)
+      }
+    )
+  })
+}
+
+async function listMessages(auth){
+  const ids = await listMessageIds(auth)
+  const messagePromises = ids.map(id => getMessage(auth, id))
+  return Promise.all(messagePromises)
+}
+
 authorize()
-  .then(listMessageIds)
+  .then(listMessages)
   .then(console.log)
