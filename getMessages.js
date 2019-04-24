@@ -2,27 +2,27 @@ const { google } = require('googleapis')
 const authorize = require('./authorizeGoogleAPI.js')
 const fs = require('fs')
 
-function listMessageIds(auth) {
+function listThreadIds(auth) {
   const gmail = google.gmail({ version: 'v1', auth })
 
   return new Promise((resolve, reject) => {
-    gmail.users.messages.list(
+    gmail.users.threads.list(
       {
         userId: 'me',
       },
       (err, res) => {
         if (err) reject(err)
-        resolve(res.data.messages.map(message => message.id))
+        resolve(res.data.threads.map(thread => thread.id))
       }
     )
   })
 }
 
-function getMessage(auth, id) {
+function getThread(auth, id) {
   const gmail = google.gmail({ version: 'v1', auth })
 
   return new Promise((resolve, reject) => {
-    gmail.users.messages.get(
+    gmail.users.threads.get(
       {
         userId: 'me',
         id,
@@ -35,12 +35,11 @@ function getMessage(auth, id) {
   })
 }
 
-async function listMessages(auth) {
-  const ids = await listMessageIds(auth)
-  // const messagePromises = ids.slice(0, 10).map(id => getMessage(auth, id))
-  const messagePromises = [ids[0]].map(id => getMessage(auth, id))
+async function listThreads(auth) {
+  const ids = await listThreadIds(auth)
+  const threadPromises = ids.slice(0, 3).map(id => getThread(auth, id))
 
-  return Promise.all(messagePromises)
+  return Promise.all(threadPromises)
 }
 
 function decodePart(part) {
@@ -52,16 +51,18 @@ function decodePart(part) {
 }
 
 authorize()
-  .then(listMessages)
-  .then(messages =>
-    messages.map(message => ({
-      snippet: message.data.snippet,
-      parts: message.data.payload.parts.map(decodePart),
-    }))
+  .then(listThreads)
+  .then(threads =>
+    threads.map(thread => {
+      return {
+        id: thread.data.id,
+        messages: thread.data.messages//.map(message => decodePart(message.payload))
+      }
+    })
   )
-  .then(messages => {
-    console.log(messages)
-    fs.writeFile('messages.json', JSON.stringify(messages), err => {
+  .then(threads => {
+    console.log(threads)
+    fs.writeFile('threads.json', JSON.stringify(threads), err => {
       if (err) throw err
       console.log('The file has been saved!')
     })
