@@ -42,11 +42,15 @@ async function listThreads(auth) {
   return Promise.all(threadPromises)
 }
 
-function decodePart(part) {
-  if (part.parts) {
-    return part.parts.map(decodePart)
+function decodePayload(payload) {
+  if (!payload) {
+    return console.log('No payload!')
+  } else if (payload.parts) {
+    return decodePayload(payload.parts[payload.parts.length - 1])
+  } else if (payload.body && payload.body.data) {
+    return Buffer.from(payload.body.data, 'base64').toString('ascii')
   } else {
-    return Buffer.from(part.body.data, 'base64').toString('ascii')
+    return console.log('Payload has neither parts nor body.data')
   }
 }
 
@@ -56,7 +60,10 @@ authorize()
     threads.map(thread => {
       return {
         id: thread.data.id,
-        messages: thread.data.messages//.map(message => decodePart(message.payload))
+        messages: thread.data.messages.map(message => ({
+          snippet: message.snippet,
+          payload: decodePayload(message.payload),
+        })),
       }
     })
   )
