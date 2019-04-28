@@ -61,6 +61,8 @@ authorize()
       return {
         id: thread.data.id,
         messages: thread.data.messages.map(message => ({
+          subject: message.payload.headers.find(header => header.name === 'Subject').value,
+          from: message.payload.headers.find(header => header.name === 'From').value,
           snippet: message.snippet,
           payload: decodePayload(message.payload),
         })),
