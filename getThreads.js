@@ -46,9 +46,11 @@ function decodePayload(payload) {
   if (!payload) {
     return console.log('No payload!')
   } else if (payload.parts) {
-    return decodePayload(payload.parts[payload.parts.length - 1])
+    return decodePayload(payload.parts[payload.parts.length - 1]) // last part is the HTML version
   } else if (payload.body && payload.body.data) {
-    return Buffer.from(payload.body.data, 'base64').toString('ascii')
+    // Decode from base64:
+    const asciiString = Buffer.from(payload.body.data, 'base64').toString('ascii')
+    return asciiString
   } else {
     return console.log('Payload has neither parts nor body.data')
   }
