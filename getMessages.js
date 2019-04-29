@@ -3,27 +3,27 @@ const authorize = require('./authorizeGoogleAPI.js')
 const fs = require('fs')
 const convertPayload = require('./convertPayload')
 
-function listThreadIds(auth) {
+function listMessageIds(auth) {
   const gmail = google.gmail({ version: 'v1', auth })
 
   return new Promise((resolve, reject) => {
-    gmail.users.threads.list(
+    gmail.users.messages.list(
       {
         userId: 'me',
       },
       (err, res) => {
         if (err) reject(err)
-        resolve(res.data.threads.map(thread => thread.id))
+        resolve(res.data.messages.map(message => message.id))
       }
     )
   })
 }
 
-function getThread(auth, id) {
+function getMessage(auth, id) {
   const gmail = google.gmail({ version: 'v1', auth })
 
   return new Promise((resolve, reject) => {
-    gmail.users.threads.get(
+    gmail.users.messages.get(
       {
         userId: 'me',
         id,
@@ -36,32 +36,29 @@ function getThread(auth, id) {
   })
 }
 
-async function listThreads(auth) {
-  const ids = await listThreadIds(auth)
-  const threadPromises = ids.slice(0, 3).map(id => getThread(auth, id))
+async function listMessages(auth) {
+  const ids = await listMessageIds(auth)
+  const messagePromises = ids.slice(0, 10).map(id => getMessage(auth, id))
+  // const messagePromises = [ids[0]].map(id => getMessage(auth, id))
 
-  return Promise.all(threadPromises)
+  return Promise.all(messagePromises)
 }
 
 authorize()
-  .then(listThreads)
-  .then(threads =>
-    threads.map(thread => {
-      return {
-        id: thread.data.id,
-        messages: thread.data.messages.map(message => ({
-          subject: message.payload.headers.find(header => header.name === 'Subject').value,
-          from: message.payload.headers.find(header => header.name === 'From').value,
-          snippet: message.snippet,
-          payload: convertPayload(message.payload),
-        })),
-      }
-    })
+  .then(listMessages)
+  .then(messages =>
+    messages.map(message => ({
+      // headers: message.headers,
+      subject: message.data.payload.headers.find(header => header.name === 'Subject').value,
+      from: message.data.payload.headers.find(header => header.name === 'From').value,
+      snippet: message.data.snippet,
+      payload: convertPayload(message.data.payload),
+    }))
   )
-  .then(threads => {
-    fs.writeFile('threads.json', JSON.stringify(threads), err => {
+  .then(messages => {
+    fs.writeFile('messages.json', JSON.stringify(messages), err => {
       if (err) throw err
       console.log('The file has been saved!')
     })
   })
-  .catch(console.error)
+  .catch(err => console.error(err))
