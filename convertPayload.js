@@ -21,7 +21,10 @@ function convertPayload(payload) {
     // convert HTML to markdown:
     return turndownService.turndown(utf8String)
   } else {
-    return console.log('Payload has neither parts nor body.data')
+    /* As far as I can tell, this only happens when a part is an attachment
+    I suspect that dealing with attachments is not feasible in the amount
+    of time I'm willing to spend on this. */
+    return console.log('Payload has neither parts nor body.data!')
   }
 }
 
