@@ -1,29 +1,28 @@
 const Turndown = require('turndown')
 const turndownService = new Turndown()
 
+/**
+ * Converts the payload of a message resource
+ * (https://developers.google.com/gmail/api/v1/reference/users/messages#resource)
+ * returned from the GMail API from an object containing base64 encoded HTML to
+ * a utf-8 encoded, markdown-formatted string.
+ * @param {object} payload
+ */
 function convertPayload(payload) {
   if (!payload) {
     return console.log('No payload!')
   } else if (payload.parts) {
-    return convertPayload(payload.parts[payload.parts.length - 1]) // last part is the HTML version
+    // If it's in multipart format, the last part contains the HTML version
+    return convertPayload(payload.parts[payload.parts.length - 1])
   } else if (payload.body && payload.body.data) {
-    return convertToMarkdown(payload.body.data)
+    // Decode from base64:
+    const utf8String = Buffer.from(payload.body.data, 'base64').toString('utf-8')
+
+    // convert HTML to markdown:
+    return turndownService.turndown(utf8String)
   } else {
     return console.log('Payload has neither parts nor body.data')
   }
-}
-
-function convertToMarkdown(str) {
-  // Decode from base64:
-  const utf8String = Buffer.from(str, 'base64').toString('utf-8')
-
-  // convert HTML to markdown:
-  return turndownService.turndown(utf8String)
-  // .replace(/<\/?i[^>]*>/g, '_')
-  // .replace(/<\/?b( [^>]*)?>/g, '**')
-  // .replace(/<\/?strong( [^>]+)?>/g, '**')
-  // .replace(/<a ([^>]+)? href="([\w./]+)"\/?>/, '$i')
-  // .replace(/<\/?[^>]*>/g, '')
 }
 
 module.exports = convertPayload

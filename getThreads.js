@@ -43,18 +43,6 @@ async function listThreads(auth) {
   return Promise.all(threadPromises)
 }
 
-function decodePayload(payload) {
-  if (!payload) {
-    return console.log('No payload!')
-  } else if (payload.parts) {
-    return decodePayload(payload.parts[payload.parts.length - 1]) // last part is the HTML version
-  } else if (payload.body && payload.body.data) {
-    return convertPayload(payload.body.data)
-  } else {
-    return console.log('Payload has neither parts nor body.data')
-  }
-}
-
 authorize()
   .then(listThreads)
   .then(threads =>
@@ -65,7 +53,7 @@ authorize()
           subject: message.payload.headers.find(header => header.name === 'Subject').value,
           from: message.payload.headers.find(header => header.name === 'From').value,
           snippet: message.snippet,
-          payload: decodePayload(message.payload),
+          payload: convertPayload(message.payload),
         })),
       }
     })
