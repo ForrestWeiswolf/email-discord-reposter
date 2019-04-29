@@ -57,7 +57,7 @@ function authorize(callback) {
   return new Promise((resolve, reject) => {
     // Check if we have previously stored a token.
     fs.readFile(TOKEN_PATH, (err, token) => {
-      if (err){
+      if (err) {
         resolve(getNewToken(oAuth2Client, callback))
       } else {
         oAuth2Client.setCredentials(JSON.parse(token))
