@@ -1,6 +1,7 @@
 const { google } = require('googleapis')
 const authorize = require('./authorizeGoogleAPI.js')
 const fs = require('fs')
+const convertPayload = require('./convertPayload')
 
 function listThreadIds(auth) {
   const gmail = google.gmail({ version: 'v1', auth })
@@ -48,9 +49,7 @@ function decodePayload(payload) {
   } else if (payload.parts) {
     return decodePayload(payload.parts[payload.parts.length - 1]) // last part is the HTML version
   } else if (payload.body && payload.body.data) {
-    // Decode from base64:
-    const asciiString = Buffer.from(payload.body.data, 'base64').toString('ascii')
-    return asciiString
+    return convertPayload(payload.body.data)
   } else {
     return console.log('Payload has neither parts nor body.data')
   }
