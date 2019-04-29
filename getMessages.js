@@ -50,8 +50,11 @@ authorize()
   .then(messages =>
     messages.map(message => ({
       // headers: message.headers,
-      subject: message.data.payload.headers.find(header => header.name === 'Subject').value,
-      from: message.data.payload.headers.find(header => header.name === 'From').value,
+      subject: message.data.payload.headers.find(
+        header => header.name === 'Subject'
+      ).value,
+      from: message.data.payload.headers.find(header => header.name === 'From')
+        .value,
       snippet: message.data.snippet,
       payload: convertPayload(message.data.payload),
     }))
