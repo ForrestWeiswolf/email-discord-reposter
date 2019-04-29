@@ -3,13 +3,14 @@ const authorize = require('./authorizeGoogleAPI.js')
 const fs = require('fs')
 const convertPayload = require('./convertPayload')
 
-function listMessageIds(auth) {
+function listMessageIds(auth, query) {
   const gmail = google.gmail({ version: 'v1', auth })
 
   return new Promise((resolve, reject) => {
     gmail.users.messages.list(
       {
         userId: 'me',
+        q: query,
       },
       (err, res) => {
         if (err) reject(err)
@@ -36,16 +37,16 @@ function getMessage(auth, id) {
   })
 }
 
-async function listMessages(auth) {
-  const ids = await listMessageIds(auth)
-  const messagePromises = ids.slice(0, 10).map(id => getMessage(auth, id))
+async function listMessages(auth, query) {
+  const ids = await listMessageIds(auth, query)
+  const messagePromises = ids.map(id => getMessage(auth, id))
   // const messagePromises = [ids[0]].map(id => getMessage(auth, id))
 
   return Promise.all(messagePromises)
 }
 
 authorize()
-  .then(listMessages)
+  .then(auth => listMessages(auth, 'newer_than:36h'))
   .then(messages =>
     messages.map(message => ({
       // headers: message.headers,
