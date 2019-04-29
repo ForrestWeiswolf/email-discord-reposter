@@ -71,7 +71,6 @@ authorize()
     })
   )
   .then(threads => {
-    console.log(threads)
     fs.writeFile('threads.json', JSON.stringify(threads), err => {
       if (err) throw err
       console.log('The file has been saved!')
