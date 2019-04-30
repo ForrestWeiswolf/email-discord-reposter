@@ -15,8 +15,20 @@ function DiscordBot(postHook) {
  * @param {string} body The body of the message.
  */
 DiscordBot.prototype.repostMessage = function(sender, subject, body) {
+
+  // Discord usernames must be <= 32 chars
+  let username = sender
+
+  // First, remove bracketed email addresses from end of sender name
+  username = username.replace(/<\S+@\S+\.\w+>/, '')
+
+  // Then just cut it off if neccessary
+  if(username.length > 31){
+    username = username.slice(0, 30) + '…'
+  }
+
   let message = {
-    username: `${sender}`,
+    username,
     content: subject + ':\n\n' + body,
   }
 
