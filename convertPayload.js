@@ -1,5 +1,10 @@
 const Turndown = require('turndown')
-const turndownService = new Turndown()
+const turndownService = new Turndown().addRule('link', {
+  filter: 'a',
+  replacement: function(content, node) {
+    return `${content} (${node.getAttribute('href')})`
+  },
+})
 
 /**
  * Converts the payload of a message resource
@@ -16,7 +21,9 @@ function convertPayload(payload) {
     return convertPayload(payload.parts[payload.parts.length - 1])
   } else if (payload.body && payload.body.data) {
     // Decode from base64:
-    const utf8String = Buffer.from(payload.body.data, 'base64').toString('utf-8')
+    const utf8String = Buffer.from(payload.body.data, 'base64').toString(
+      'utf-8'
+    )
 
     // convert HTML to markdown:
     return turndownService.turndown(utf8String)
