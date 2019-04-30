@@ -28,6 +28,11 @@ const quoteStart = /On \w{3,}, \w{3,} \d\d?,[^\n]+ [PA]M [^\n]+ wrote:/g
 
 const quoteEnd = /--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.))$/
 
+/**
+ * Replies to an email include the whole previous email or chain of emails
+ * in quote blocks at the bottom. This function is intended to remove those.
+ * @param {string} text
+ */
 function removeQuotes(text) {
   text = text.replace(/\s+$/, '')
 
@@ -41,6 +46,11 @@ function removeQuotes(text) {
   return text
 }
 
+/**
+ * Remove the "You received this message because you are subscribed to groupname" etc.
+ * from the end of mailing list messages.
+ * @param {string} text
+ */
 function removeEnd(text) {
   text = text.replace(/\s+$/, '')
 
