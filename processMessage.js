@@ -5,12 +5,17 @@ const convertPayload = require('./convertPayload')
  * @param {message} message The message to process
  */
 function processMessage(message) {
+  const subject = message.data.payload.headers.find(
+    header => header.name === 'Subject'
+  ).value
+
+  const from = message.data.payload.headers.find(
+    header => header.name === 'From'
+  ).value
+
   return {
-    subject: message.data.payload.headers.find(
-      header => header.name === 'Subject'
-    ).value,
-    from: message.data.payload.headers.find(header => header.name === 'From')
-      .value,
+    subject,
+    from,
     payload: convertPayload(message.data.payload),
   }
 }
