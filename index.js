@@ -1,6 +1,7 @@
-const authorize = require('./authorizeGoogleAPI.js')
 const fs = require('fs')
-const { listMessages, processMessage } = require('./getMessages.js')
+const authorize = require('./authorizeGoogleAPI')
+const { listMessages } = require('./getMessages')
+const processMessage = require('./processMessage')
 require('./secrets.js')
 
 authorize()
