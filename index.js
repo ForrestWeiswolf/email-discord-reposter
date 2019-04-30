@@ -1,10 +1,11 @@
 const authorize = require('./authorizeGoogleAPI.js')
 const fs = require('fs')
 const { listMessages, processMessage } = require('./getMessages.js')
+require('./secrets.js')
 
 authorize()
   .then(auth =>
-    listMessages(auth, 'newer_than:36h')
+    listMessages(auth, process.env.GMAIL_QUERY)
   )
   .then(messages => messages.map(processMessage))
   .then(messages => {
