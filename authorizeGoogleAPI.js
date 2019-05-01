@@ -4,7 +4,7 @@ const fs = require('fs')
 const readline = require('readline')
 const { google } = require('googleapis')
 
-require('./secrets.js')
+if(process.env.NODE_ENV !== 'production') require('./secrets.js')
 const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS)
 
 const TOKEN_PATH = 'token.json'
