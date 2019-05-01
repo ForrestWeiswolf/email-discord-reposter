@@ -4,7 +4,7 @@
   "description": "Repost from a mailing list to a discord server",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node index.js",
     "test": "mocha ./**/*.spec.js"
   },
   "repository": {
