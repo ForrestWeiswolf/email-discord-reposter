@@ -4,8 +4,8 @@
   "description": "Repost from a mailing list to a discord server",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "mocha ./**/*.spec.js"
+    "start": "echo \"Application is ready.\"",
+    "repost": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,10 +17,7 @@
     "url": "https://github.com/ForrestWeiswolf/email-discord-reposter/issues"
   },
   "homepage": "https://github.com/ForrestWeiswolf/email-discord-reposter#readme",
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.1.4"
-  },
+  "devDependencies": {},
   "dependencies": {
     "axios": "^0.18.0",
     "googleapis": "^27.0.0",
