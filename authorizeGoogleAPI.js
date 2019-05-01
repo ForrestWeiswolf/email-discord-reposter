@@ -4,7 +4,7 @@ const fs = require('fs')
 const readline = require('readline')
 const { google } = require('googleapis')
 
-if(process.env.NODE_ENV !== 'production') require('./secrets.js')
+if (process.env.NODE_ENV !== 'production') require('./secrets.js')
 const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS)
 
 const TOKEN_PATH = 'token.json'
@@ -15,7 +15,7 @@ const TOKEN_PATH = 'token.json'
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
-function getNewToken(oAuth2Client, callback) {
+async function getNewToken(oAuth2Client, callback) {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: ['https://www.googleapis.com/auth/gmail.readonly'],
@@ -27,18 +27,21 @@ function getNewToken(oAuth2Client, callback) {
     input: process.stdin,
     output: process.stdout,
   })
-  rl.question('Enter the code from that page here: ', code => {
-    rl.close()
 
-    oAuth2Client.getToken(code, (err, token) => {
-      if (err) return console.error('Error retrieving access token', err)
-      oAuth2Client.setCredentials(token)
-      // Store the token to disk for later program executions
-      fs.writeFile(TOKEN_PATH, JSON.stringify(token), err => {
-        if (err) return console.error(err)
-        console.log('Token stored to', TOKEN_PATH)
+  return new Promise((resolve, reject) => {
+    rl.question('Enter the code from that page here: ', code => {
+      rl.close()
+
+      oAuth2Client.getToken(code, (err, token) => {
+        if (err) return console.error('Error retrieving access token', err)
+        oAuth2Client.setCredentials(token)
+        // Store the token to disk for later program executions
+        fs.writeFile(TOKEN_PATH, JSON.stringify(token), err => {
+          if (err) reject(err)
+          console.log('Token stored to', TOKEN_PATH)
+        })
+        resolve(oAuth2Client)
       })
-      callback(oAuth2Client)
     })
   })
 }
