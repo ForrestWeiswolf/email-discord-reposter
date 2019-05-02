@@ -32,11 +32,10 @@ function getNewToken(oAuth2Client, callback) {
 
       oAuth2Client.getToken(code, (err, token) => {
         if (err) return console.error('Error retrieving access token', err)
-        oAuth2Client.setCredentials(token)
-        // Store the token to disk for later program executions
-        process.env.OAUTH_TOKEN = JSON.stringify(token)
-        console.log('Token stored')
-        resolve(oAuth2Client)
+        // Ask the user to add the token to process.env
+        // (a temporary solution, hopefully)
+        console.log('Add the following token as process.env.OAUTH_TOKEN:')
+        console.log(JSON.stringify(token))
       })
     })
   })
