@@ -7,15 +7,13 @@ const { google } = require('googleapis')
 if (process.env.NODE_ENV !== 'production') require('./secrets.js')
 const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS)
 
-const TOKEN_PATH = 'token.json'
-
 /**
  * Get and store new token after prompting for user authorization, and then
  * execute the given callback with the authorized OAuth2 client.
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
-async function getNewToken(oAuth2Client, callback) {
+function getNewToken(oAuth2Client, callback) {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: ['https://www.googleapis.com/auth/gmail.readonly'],
@@ -36,10 +34,8 @@ async function getNewToken(oAuth2Client, callback) {
         if (err) return console.error('Error retrieving access token', err)
         oAuth2Client.setCredentials(token)
         // Store the token to disk for later program executions
-        fs.writeFile(TOKEN_PATH, JSON.stringify(token), err => {
-          if (err) reject(err)
-          console.log('Token stored to', TOKEN_PATH)
-        })
+        process.env.OAUTH_TOKEN = JSON.stringify(token)
+        console.log('Token stored')
         resolve(oAuth2Client)
       })
     })
@@ -59,14 +55,12 @@ function authorize(callback) {
 
   return new Promise((resolve, reject) => {
     // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH, (err, token) => {
-      if (err) {
-        resolve(getNewToken(oAuth2Client, callback))
-      } else {
-        oAuth2Client.setCredentials(JSON.parse(token))
-        resolve(oAuth2Client)
-      }
-    })
+    if(process.env.OAUTH_TOKEN){
+      oAuth2Client.setCredentials(JSON.parse(process.env.OAUTH_TOKEN))
+      resolve(oAuth2Client)
+    } else {
+      resolve(getNewToken(oAuth2Client, callback))
+    }
   })
 }
 
