@@ -1,6 +1,6 @@
 Automatically repost messages from a Google Group to a Discord server.
 
-# To run locally:
+# How to run locally:
 
 - `npm install`
 - Set up a Gmail account that's subscribed to the Google Group
@@ -27,3 +27,16 @@ Add this to the end of secrets.js:
 `process.env.OAUTH_TOKEN = ` your token
 
 Now, you should be able to `npm run repost` and have it work.
+
+# How to deploy:
+I deployed this to Heroku, so that's what the instructions will cover. It shouldn't be hard to adapt to other hosting services, however.
+
+[Create a heroku app](https://devcenter.heroku.com/articles/getting-started-with-nodejs?singlepage=true), and push this to it
+
+From this point on, the process should be very similar to running locally, with the following exceptions:
+
+- Everything that you added to `secrets.js` before will now be added to the config vars. Also, you'll need to set the config var `NODE_ENV` to `production`, if it isn't already.
+
+- You may need to replace `http://localhost` in the Google credentials with the url of your Heroku app, as well.
+
+- Instead of `npm run repost`, you'll need to use `heroku run npm run repost`
