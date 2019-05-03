@@ -4,7 +4,7 @@ const { listMessages } = require('./getMessages')
 const processMessage = require('./processMessage')
 const DiscordBot = require('./DiscordBot')
 
-if(process.env.NODE_ENV !== 'production') require('./secrets.js')
+if (process.env.NODE_ENV !== 'production') require('./secrets.js')
 const bot = new DiscordBot(process.env.POST_HOOK)
 
 authorize()
