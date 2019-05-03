@@ -15,7 +15,6 @@ function DiscordBot(postHook) {
  * @param {string} body The body of the message.
  */
 DiscordBot.prototype.repostMessage = function(sender, subject, body) {
-
   // Discord usernames must be <= 32 chars
   let username = sender
 
