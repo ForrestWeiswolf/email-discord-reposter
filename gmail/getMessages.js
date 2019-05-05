@@ -1,5 +1,4 @@
 const { google } = require('googleapis')
-const convertPayload = require('./processMessage')
 
 /**
  * Returns a promise that resolves to an array of the IDs of all messages in the authorized mailbox that match the passed query.

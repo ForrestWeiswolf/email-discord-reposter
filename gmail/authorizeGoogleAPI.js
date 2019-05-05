@@ -1,6 +1,5 @@
 // This code is closely based on https://developers.google.com/gmail/api/quickstart/nodejs
 
-const fs = require('fs')
 const readline = require('readline')
 const { google } = require('googleapis')
 

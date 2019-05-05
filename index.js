@@ -1,4 +1,3 @@
-const fs = require('fs')
 const authorize = require('./gmail/authorizeGoogleAPI')
 const { listMessages } = require('./gmail/getMessages')
 const processMessage = require('./gmail/processMessage')
