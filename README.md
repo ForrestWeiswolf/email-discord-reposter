@@ -1,4 +1,4 @@
-Automatically repost messages from a Google Group to a Discord server.
+A program to automatically repost messages from a Google Group to a Discord server.
 
 # How to run locally:
 
@@ -40,3 +40,8 @@ From this point on, the process should be very similar to running locally, with 
 - You may need to replace `http://localhost` in the Google credentials with the url of your Heroku app, as well.
 
 - Instead of `npm run repost`, you'll need to use `heroku run npm run repost`
+
+- To get it to run automatically every hour, I used [Heroku scheduler](https://devcenter.heroku.com/articles/scheduler).
+  - Run `heroku addons:create scheduler:standard`
+  - Open the Scheduler dashboard by finding the app in My Apps, clicking “General Info”, then selecting “Scheduler” from the Add-ons drop down
+  - Click "Add job" on the scheduler dashboard. The job should be `npm run repost`, and the frequesncy you pick should match the query - if we're getting emails from the last hour, than we want it to run once per hour.
