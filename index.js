@@ -1,8 +1,8 @@
 const fs = require('fs')
-const authorize = require('./authorizeGoogleAPI')
-const { listMessages } = require('./getMessages')
-const processMessage = require('./processMessage')
-const DiscordBot = require('./DiscordBot')
+const authorize = require('./gmail/authorizeGoogleAPI')
+const { listMessages } = require('./gmail/getMessages')
+const processMessage = require('./gmail/processMessage')
+const DiscordBot = require('./discord/DiscordBot')
 
 if (process.env.NODE_ENV !== 'production') require('./secrets.js')
 const bot = new DiscordBot(process.env.POST_HOOK)
