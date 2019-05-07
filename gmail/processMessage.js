@@ -29,8 +29,9 @@ const quoteStart = /On \w{3,}, \w{3,} \d\d?,[^\n]+ [PA]M [^\n]+ wrote:/g
 const quoteEnd = /\\?--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.))$/
 
 /**
- * Replies to an email include the whole previous email or chain of emails
+ * Emails that are a reply include the whole previous email or chain of emails
  * in quote blocks at the bottom. This function is intended to remove those.
+ *  *NOTE*: this has bugs and does not always work. I recommend filtering out replies for the time being. Will test teh regexes more thouroughly and fix it in a later version.
  * @param {string} text
  */
 function removeQuotes(text) {
