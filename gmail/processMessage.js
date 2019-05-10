@@ -26,7 +26,7 @@ function processMessage(message) {
 
 const quoteStart = /On \w{3,}, \w{3,} \d\d?,[^\n]+ [PA]M [^\n]+ wrote:/g
 
-const quoteEnd = /\\?--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.))$/
+const messageEndBoilerplate = /\\?--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.))$/
 
 /**
  * Emails that are a reply include the whole previous email or chain of emails
@@ -37,11 +37,12 @@ const quoteEnd = /\\?--\s+You received this message because you are subscribed(.
 function removeQuotes(text) {
   text = text.replace(/\s+$/, '')
 
-  while (quoteEnd.test(text) && quoteStart.test(text)) {
+  while (messageEndBoilerplate.test(text) && quoteStart.test(text)) {
     let matches = text.match(quoteStart)
     let lastQuoteStart = text.lastIndexOf(matches[matches.length - 1])
     text = text.slice(0, lastQuoteStart)
   }
+  text = text.replace(/On \w{3,}, \w{3,} \d\d?,[^\n]+ [PA]M [^\n]+ wrote:.+\\?--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.))$/g, '')
 
   text = text.replace(/\s+$/, '')
   return text
@@ -55,7 +56,7 @@ function removeQuotes(text) {
 function removeEnd(text) {
   text = text.replace(/\s+$/, '')
 
-  text = text.replace(quoteEnd, '')
+  text = text.replace(messageEndBoilerplate, '')
 
   text = text.replace(/\s+$/, '')
 
