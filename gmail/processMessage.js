@@ -38,8 +38,7 @@ const messageEndBoilerplate = /\s*\\?--\s+You received this message because you 
  */
 function removeQuotes(text) {
   const finalQuotedSection = new RegExp(`${quoteStart.source}(${quotedLine.source})*\\s*$`)
-  text = text.replace(finalQuotedSection, '')
-  return text
+  return text.replace(finalQuotedSection, '')
 }
 
 /**
@@ -48,9 +47,7 @@ function removeQuotes(text) {
  * @param {string} text
  */
 function removeEnd(text) {
-  text = text.replace(messageEndBoilerplate, '')
-
-  return text
+  return text.replace(messageEndBoilerplate, '')
 }
 
 module.exports = processMessage
