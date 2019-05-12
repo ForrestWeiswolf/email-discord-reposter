@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "echo \"Application is ready.\"",
-    "repost": "node index.js"
+    "repost": "node index.js",
+    "test": "mocha **/*.test.js --recursive"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,9 @@
   "devDependencies": {},
   "dependencies": {
     "axios": "^0.18.0",
+    "chai": "^4.2.0",
     "googleapis": "^27.0.0",
+    "mocha": "^6.1.4",
     "turndown": "^5.0.3"
   }
 }
