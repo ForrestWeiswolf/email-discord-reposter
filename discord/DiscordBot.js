@@ -1,4 +1,5 @@
 const axios = require('axios')
+const convertHTMLToMarkdown = require('./convertHTMLToMarkdown')
 
 /**
  * A bot capable of posting to a discord server using a webhook
@@ -28,7 +29,7 @@ DiscordBot.prototype.repostMessage = function(sender, subject, body) {
 
   let message = {
     username,
-    content: subject + ':\n\n' + body,
+    content: subject + ':\n\n' + convertHTMLToMarkdown(body),
   }
 
   return axios.post(this.postHook, message)

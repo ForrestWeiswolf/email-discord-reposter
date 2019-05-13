@@ -1,5 +1,3 @@
-const convertHTMLToMarkdown = require('./convertHTMLToMarkdown')
-
 /**
  * Converts the payload of a message resource
  * (https://developers.google.com/gmail/api/v1/reference/users/messages#resource)
@@ -21,9 +19,9 @@ function convertPayload(payload) {
       // There was an issue with it stripping out all newlines in some messages, and this is a workaround.
       .replace(/[\n\r]/g, '<br>')
 
-    return convertHTMLToMarkdown(utf8String)
+    return utf8String
   } else {
-    /* As far as I can tell, this only happens when a part is an attachment
+    /* As far as I can tell, this only happens when a part is an attachment.
     I suspect that dealing with attachments is not feasible in the amount
     of time I'm willing to spend on this. */
     return console.log('Payload has neither parts nor body.data!')
