@@ -28,7 +28,7 @@ const quoteStart = /\s*On \w{3,}, \w{3,} \d\d?,[^\n]+ [PA]M [^\n]+ wrote:/g
 
 const quotedLine = /(\n(\s+[^\n\r]*)|$)*/
 
-const messageEndBoilerplate = /\s*\\?--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.))\s*$/
+const messageEndBoilerplate = /\s*\\?--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.)).*$/
 
 /**
  * Emails that are a reply include the whole previous email or chain of emails
