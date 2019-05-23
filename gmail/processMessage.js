@@ -27,7 +27,7 @@ function processMessage(message) {
 // This should probably be made more specific
 const quoteStart = /On .*, \w+.* wrote:/
 
-const quotedLine = /\n\s*[^\n\r]*/
+const quotedLine = /\n\s*.*/
 
 const messageEndBoilerplate = /\s*\\?--\s+You received this message because you are subscribed(.\n?)+ ?((groups.google.com\/d\/optout\)?\.)|(\+unsubscribe@googlegroups.com\)?\.))(.|\n)*$/
 
