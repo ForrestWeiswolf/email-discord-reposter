@@ -34,7 +34,7 @@ const messageEndBoilerplate = /\s*\\?--\s+You received this message because you 
 /**
  * Emails that are a reply include the whole previous email or chain of emails
  * in quote blocks at the bottom. This function is intended to remove those.
- *  *NOTE*: this has bugs and does not always work. I recommend filtering out replies for the time being. Will test the regexes more thouroughly and fix it in a later version.
+ * NOTE: until recently, this was pretty buggy, and I might not have caught all of them yet. Keep an eye out.
  * @param {string} text
  */
 function removeQuotes(text) {
