@@ -24,7 +24,8 @@ function processMessage(message) {
   }
 }
 
-const quoteStart = /\s*On \w{3,}, \w{3,} \d\d?,[^\n]+ [PA]M [^\n]+ wrote:/g
+// This should probably be made more specific
+const quoteStart = /On .*, \w+.* wrote:/
 
 const quotedLine = /\n\s*[^\n\r]*/
 
