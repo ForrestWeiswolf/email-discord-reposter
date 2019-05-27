@@ -28,7 +28,7 @@ DiscordBot.prototype.repostMessage = function(sender, subject, body) {
 
   let message = {
     username,
-    content: `(Reposted from mailing list) **${subject}**:\n\n${body}\n\n`,
+    content: `**${subject}** (Reposted from mailing list):\n\n${body}\n\n`,
   }
 
   return axios.post(this.postHook, message)
