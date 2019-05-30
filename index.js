@@ -10,7 +10,9 @@ authorize()
   .then(auth => listMessages(auth, process.env.GMAIL_QUERY))
   .then(messages => messages.map(processMessage))
   .then(messages => {
-    messages.forEach(message => {
+    // The messages are in most-to-least recent order, I believe,
+    // So we'll reverse to put them in chronological order
+    messages.reverse().forEach(message => {
       bot
         .repostMessage(message.from, message.subject, message.payload)
         .catch(console.log)
