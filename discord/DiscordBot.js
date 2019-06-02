@@ -29,7 +29,7 @@ DiscordBot.prototype.repostMessage = function(sender, subject, body, isReply) {
 
   let pings = ''
   // if there's a NEW_THREAD_ROLE, ping it when the message isn't a reply
-  if (isReply && this.newThreadRole) {
+  if (!isReply && this.newThreadRole) {
     (pings += `<@&${this.newThreadRole}> `)
   }
 
