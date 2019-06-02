@@ -20,7 +20,8 @@ function processMessage(message) {
   return {
     subject,
     from,
-    payload: removeQuotes(payload)
+    payload: removeQuotes(payload),
+    isReply
   }
 }
 
