@@ -8,6 +8,8 @@ const bot = new DiscordBot(process.env.POST_HOOK, process.env.NEW_THREAD_ROLE)
 
 authorize()
   .then(auth => listMessages(auth, process.env.GMAIL_QUERY))
+  // sort them into chronological order
+  .then(messages => messages.sort((a, b) => b.internalDate - a.internalDate))
   .then(messages => messages.map(processMessage))
   .then(messages => {
     // The messages are in most-to-least recent order, I believe,
