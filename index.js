@@ -28,7 +28,7 @@ authorize()
       messages,
       message => {
         bot
-          .repostMessage(message.from, message.subject, message.payload)
+          .repostMessage(message.from, message.subject, message.payload, message.isReply)
           .catch(console.log)
       },
       1000
