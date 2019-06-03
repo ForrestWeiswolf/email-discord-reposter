@@ -7,7 +7,7 @@ const turndownService = new Turndown()
     // However, if the content is just the url written out, we don't need to put the URL in parentheses.
     filter: 'a',
     replacement: function(content, node) {
-      const location = node.getAttribute('href')
+      const location = node.getAttribute('href') || ''
 
       const stripUrl = url =>
         url
