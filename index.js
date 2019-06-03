@@ -4,7 +4,7 @@ const processMessage = require('./gmail/processMessage')
 const DiscordBot = require('./discord/DiscordBot')
 
 if (process.env.NODE_ENV !== 'production') require('./secrets.js')
-const bot = new DiscordBot(process.env.POST_HOOK)
+const bot = new DiscordBot(process.env.POST_HOOK, process.env.NEW_THREAD_ROLE)
 
 authorize()
   .then(auth => listMessages(auth, process.env.GMAIL_QUERY))

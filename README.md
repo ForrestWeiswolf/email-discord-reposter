@@ -9,26 +9,29 @@ A program to automatically repost messages from a Google Group to a Discord serv
   - See step 1 [here](https://developers.google.com/gmail/api/quickstart/nodejs) for how to do this
 - Set up a webhook on the Discord server in question
 - Create a `secrets.js` file, with the following:
+
 ```javascript
 process.env.POST_HOOK = '' // Add your webhook URL here
 process.env.GOOGLE_CREDENTIALS = JSON.stringify('') // Add Your credentials for the Google API here
 process.env.GMAIL_QUERY = ''
-  // Add the query to repost emails according to. Supports the same query format as the Gmail search box; I recommend 'newer_than:1h list:<name_of_your_group_here>@googlegroups.com -subject:"re:"'
+// Add the query to repost emails according to. Supports the same query format as the Gmail search box; I recommend 'newer_than:1h list:<name_of_your_group_here>@googlegroups.com'
+process.env.NEW_THREAD_ROLE = '' // This line is optional, but if you add the ID of a role, that role will be pinged when the first email of a thread is reposted. You can get the ID of a role by enabling developer mode in Discord, in Settings in the Appearance section, and then right-clicking the role.
 ```
-  - Regarding the Gmail query `newer_than:1h list:<name_of_your_group_here>@googlegroups.com -subject:"re:"` - that's emails
-    - From the mailing list (for obvious reasons),
-    - That are newer than one hour (since we'll be setting this up to automatically run every hour),
-    - That don't have 're:' in the subject (because **I haven't gotten the code to remove the quoted versions of previous emails in a reply working yet - for now, I recommend using this app to repost only the first email in a thread**.)
+
+- Regarding the Gmail query `newer_than:1h list:<name_of_your_group_here>@googlegroups.com -subject:"re:"` - that's emails
+  - From the mailing list (for obvious reasons),
+  - That are newer than one hour (since we'll be setting this up to automatically run every hour),
 - `npm run repost` should give you a URL to visit to authorize the app. Do that, and past in the code it gives you.
 
 -The app will display a token, and ask you to add it as process.env.OAUTH_TOKEN.
 
 Add this to the end of secrets.js:
-`process.env.OAUTH_TOKEN = ` your token
+`process.env.OAUTH_TOKEN =` your token
 
 Now, you should be able to `npm run repost` and have it work.
 
 # How to deploy:
+
 I deployed this to Heroku, so that's what the instructions will cover. It shouldn't be hard to adapt to other hosting services, however.
 
 [Create a heroku app](https://devcenter.heroku.com/articles/getting-started-with-nodejs?singlepage=true), and push this to it
