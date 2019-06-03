@@ -13,7 +13,9 @@ function processMessage(message) {
     header => header.name === 'From'
   ).value
 
-  const isReply = subject.indexOf('Re:') === 0
+  const isReply = !!message.data.payload.headers.find(
+    header => (header.name === 'In-Reply-To') || (header.name === 'References')
+  )
 
   const payload = convertPayload(message.data.payload)
 
