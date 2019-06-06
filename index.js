@@ -20,7 +20,11 @@ function forEachWait(arr, func, wait) {
 authorize()
   .then(auth => listMessages(auth, process.env.GMAIL_QUERY))
   // sort them into chronological order
-  .then(messages => messages.sort((a, b) => b.internalDate - a.internalDate))
+  .then(messages =>
+    messages.sort(
+      (a, b) => parseInt(a.data.internalDate) - parseInt(b.data.internalDate)
+    )
+  )
   .then(messages => messages.map(processMessage))
   .then(messages => {
     // Wait a second between messages so as not to get rate limited by Discord
